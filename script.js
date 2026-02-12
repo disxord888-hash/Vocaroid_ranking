@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { rank: 18, title: "ロストアンブレラ", videoId: "DeKLpgzh-qQ", status: "(予測2027年2月後期)", pubDate: "20180227", era: "③ 2014～2018（海外拡散期）", type: "pending" },
         { rank: 19, title: "混沌ブギ", videoId: "1Swg-aBO9eY", status: "(予測6月後半)", pubDate: "20230830", era: "⑤ 2022～2026（現代後期・高速成長期）", type: "pending" },
         { rank: 20, title: "BUTCHER VANITY", videoId: "vjBFftpQxxM", status: "(予測5月中期)", pubDate: "20240328", era: "⑤ 2022～2026（現代後期・高速成長期）", type: "pending" },
-        { rank: 21, title: "脳漿炸裂ガール", videoId: "_yJpE2c_FjA", status: "(予測2028年8月)", pubDate: "20130328", era: "② 2010～2014（黄金期）", type: "pending" },
+        { rank: 21, title: "脳漿炸裂ガール", videoId: "Ey_NHZNYTeE", status: "(予測2028年8月)", pubDate: "20130328", era: "② 2010～2014（黄金期）", type: "pending" },
         { rank: 22, title: "ヒバナ", videoId: "hxSg2Ioz3LM", status: "(予測2028年1月)", pubDate: "20170804", era: "③ 2014～2018（海外拡散期）", type: "pending" },
         { rank: 23, title: "マトリョシカ", videoId: "HOz-9FzIDf0", status: "(予測2029年2月)", pubDate: "20131002", era: "② 2010～2014（黄金期）", type: "pending" },
         { rank: 24, title: "千本桜", videoId: "shs0rAiwsGQ", status: "(予測2029年2月)", pubDate: "20141202", era: "② 2010～2014（黄金期）", type: "pending" },
