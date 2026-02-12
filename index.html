@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOCALOID Ranking & Eras</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-container">
+                <h1>VOCALOID <span class="accent-text">CHRONICLE</span></h1>
+                <p class="subtitle">年代別分類・再生数ランキング</p>
+            </div>
+            <div class="theme-toggle">
+                <!-- Toggle simplified for now -->
+            </div>
+        </header>
+
+        <main>
+            <section id="eras-section" class="content-section">
+                <div class="section-header">
+                    <h2>History of Vocaloid</h2>
+                    <p>進化と変遷の軌跡 (2003 - 2026)</p>
+                </div>
+                <div class="timeline-container" id="timeline-container">
+                    <!-- Eras will be injected here via JS -->
+                </div>
+            </section>
+
+            <section id="ranking-section" class="content-section">
+                <div class="section-header">
+                    <h2>View Count Ranking</h2>
+                    <p>歴代再生数ランキング (Youtube取得データ)</p>
+                </div>
+                <div class="ranking-table-container">
+                    <table class="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>曲名 / 公開日 (Song / Published)</th>
+                                <th>概要2 (Status/Date)</th>
+                                <th>時期 (Era)</th>
+                                <th>再生数 (Views)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-body">
+                            <!-- Ranking rows will be injected here via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Vocaloid Analytics. Data provided by User.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

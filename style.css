@@ -1,0 +1,258 @@
+/* Basic Setup */
+:root {
+    --bg-dark: #0a0f1d;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-primary: #EEEEEE;
+    --text-secondary: #AAAAAA;
+    --accent-primary: #39C5BB; /* Miku Teal */
+    --accent-secondary: #FF2E93; /* Neon Pink */
+    --accent-tertiary: #F2E45D; /* Yellow */
+    --font-jp: 'Noto Sans JP', sans-serif;
+    --font-en: 'Inter', sans-serif;
+    --gradient-hero: linear-gradient(135deg, rgba(57, 197, 187, 0.2), rgba(255, 46, 147, 0.2));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-en);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, th {
+    font-family: var(--font-jp);
+    font-weight: 700;
+}
+
+/* App Container */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header */
+.main-header {
+    text-align: center;
+    padding: 4rem 0;
+    position: relative;
+}
+
+.main-header h1 {
+    font-size: 3.5rem;
+    letter-spacing: -1px;
+    background: linear-gradient(to right, #fff, var(--accent-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: 5rem;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--accent-primary);
+    padding-left: 1rem;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    color: #fff;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+
+/* Timeline / Eras Section */
+.timeline-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.era-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.era-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 10px 30px rgba(57, 197, 187, 0.15);
+}
+
+.era-id {
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05);
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    z-index: 0;
+    user-select: none;
+}
+
+.era-period {
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    border: 1px solid rgba(57, 197, 187, 0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    z-index: 1;
+    position: relative;
+}
+
+.era-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    z-index: 1;
+    position: relative;
+}
+
+.era-description-list {
+    list-style: none;
+    z-index: 1;
+    position: relative;
+}
+
+.era-description-list li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.era-description-list li::before {
+    content: "•";
+    color: var(--accent-secondary);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+
+/* Ranking Table */
+.ranking-table-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-primary);
+}
+
+.ranking-table th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ranking-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.ranking-table tr:last-child td {
+    border-bottom: none;
+}
+
+.ranking-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.rank-cell {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    width: 60px;
+}
+
+.song-title-cell {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-new {
+    background: rgba(57, 197, 187, 0.2);
+    color: var(--accent-primary);
+    border: 1px solid rgba(57, 197, 187, 0.4);
+}
+
+.status-legendary {
+    background: rgba(255, 183, 77, 0.2);
+    color: #FFB74D;
+    border: 1px solid rgba(255, 183, 77, 0.4);
+}
+
+.status-default {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+.views-cell {
+    text-align: right;
+    font-family: monospace;
+    color: var(--text-secondary);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .timeline-container {
+        grid-template-columns: 1fr;
+    }
+}
