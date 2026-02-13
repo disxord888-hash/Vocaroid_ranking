@@ -113,11 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { rank: 18, title: "ロストアンブレラ", videoId: "DeKLpgzh-qQ", status: "(予測2027年2月後期)", pubDate: "20180227", type: "pending" },
         { rank: 19, title: "混沌ブギ", videoId: "1Swg-aBO9eY", status: "(予測6月後半)", pubDate: "20230830", type: "pending" },
         { rank: 20, title: "BUTCHER VANITY", videoId: "vjBFftpQxxM", status: "(予測5月中期)", pubDate: "20240328", type: "pending" },
-        { rank: 21, title: "脳漿炸裂ガール", videoId: "_yJpE2c_FjA", status: "(予測2028年8月)", pubDate: "20130328", type: "pending" },
+        { rank: 21, title: "脳漿炸裂ガール", videoId: "Ey_NHZNYTeE", status: "(予測2028年8月)", pubDate: "20130328", type: "pending" },
         { rank: 22, title: "ヒバナ", videoId: "hxSg2Ioz3LM", status: "(予測2028年1月)", pubDate: "20170804", type: "pending" },
         { rank: 23, title: "マトリョシカ", videoId: "HOz-9FzIDf0", status: "(予測2029年2月)", pubDate: "20131002", type: "pending" },
         { rank: 24, title: "千本桜", videoId: "shs0rAiwsGQ", status: "(予測2029年2月)", pubDate: "20141202", type: "pending" },
-        { rank: "伝説", title: "Nyanyanyanyanyanyanya! Nyan cat", videoId: "QH2-TGUlwu4", status: "転載を含む。(20130726)", pubDate: "20100725", type: "legend" }
+        { rank: "伝説", title: "Nyan Cat (Combined)", videoId: "2yJgwwDcgV8", videoIds: ["2yJgwwDcgV8", "LfKCLdPTqtM", "RZzvY-xqqFQ", "eI4pbCQLClA", "yarCP79fUts", "8aNBXUoZWF4"], status: "複数動画合計 (Youtubeのみ)", pubDate: "20100725", type: "legend" }
     ];
 
     const timelineContainer = document.getElementById('timeline-container');
@@ -212,7 +212,36 @@ document.addEventListener('DOMContentLoaded', () => {
             rankingBody.appendChild(row);
 
             // Fetch View Count
-            if (item.videoId) {
+            if (item.videoIds) {
+                // Combined calculation
+                try {
+                    const el = document.getElementById(`views-${item.videoId}`);
+                    if (el) el.textContent = "Calculating...";
+
+                    const fetchPromises = item.videoIds.map(vid =>
+                        fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${vid}`)
+                            .then(res => res.json())
+                            .then(data => parseInt(data.viewCount || 0))
+                            .catch(err => {
+                                console.error(`Error fetching views for ${vid}:`, err);
+                                return 0;
+                            })
+                    );
+
+                    const views = await Promise.all(fetchPromises);
+                    const totalViews = views.reduce((a, b) => a + b, 0);
+
+                    if (el) {
+                        el.textContent = totalViews.toLocaleString();
+                        el.style.color = "#fff";
+                        el.title = `Combined views from ${item.videoIds.length} videos`;
+                    }
+                } catch (error) {
+                    console.error(`Failed to calculate combined views for ${item.title}:`, error);
+                    const el = document.getElementById(`views-${item.videoId}`);
+                    if (el) el.textContent = "---";
+                }
+            } else if (item.videoId) {
                 try {
                     // Using Return YouTube Dislike API as a reliable public proxy for view counts
                     const response = await fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${item.videoId}`);
