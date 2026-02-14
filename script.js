@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { rank: 22, title: "ヒバナ", videoId: "hxSg2Ioz3LM", status: "(予測2028年1月)", pubDate: "20170804", type: "pending" },
         { rank: 23, title: "マトリョシカ", videoId: "HOz-9FzIDf0", status: "(予測2029年2月)", pubDate: "20131002", type: "pending" },
         { rank: 24, title: "千本桜", videoId: "shs0rAiwsGQ", status: "(予測2029年2月)", pubDate: "20141202", type: "pending" },
-        { rank: "伝説", title: "Nyan Cat (Combined)", videoId: "2yJgwwDcgV8", videoIds: ["2yJgwwDcgV8", "LfKCLdPTqtM", "RZzvY-xqqFQ", "eI4pbCQLClA", "yarCP79fUts", "8aNBXUoZWF4"], status: "複数動画合計 (Youtubeのみ)", pubDate: "20100725", type: "legend" }
+        { rank: "伝説", title: "Nyan Cat (Combined)", videoId: "QH2-TGUlwu4", videoIds: ["QH2-TGUlwu4","2yJgwwDcgV8", "LfKCLdPTqtM", "RZzvY-xqqFQ", "eI4pbCQLClA", "yarCP79fUts", "8aNBXUoZWF4"], status: "複数動画合計 (Youtubeのみ)", pubDate: "20100725", type: "legend" }
     ];
 
     const timelineContainer = document.getElementById('timeline-container');
