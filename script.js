@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { rank: 22, title: "ヒバナ", videoId: "hxSg2Ioz3LM", status: "(予測2028年1月)", pubDate: "20170804", type: "pending" },
         { rank: 23, title: "マトリョシカ", videoId: "HOz-9FzIDf0", status: "(予測2029年2月)", pubDate: "20131002", type: "pending" },
         { rank: 24, title: "千本桜", videoId: "shs0rAiwsGQ", status: "(予測2029年2月)", pubDate: "20141202", type: "pending" },
-        { rank: "伝説", title: "Nyan Cat (Combined)", videoId: "QH2-TGUlwu4", videoIds: ["QH2-TGUlwu4","2yJgwwDcgV8", "LfKCLdPTqtM", "RZzvY-xqqFQ", "eI4pbCQLClA", "yarCP79fUts", "8aNBXUoZWF4"], status: "複数動画合計 (Youtubeのみ)", pubDate: "20100725", type: "legend" }
+        { rank: "伝説", title: "Nyanyanyanyanyanyanya!もしくはNyan Cat (Combined)", videoId: "QH2-TGUlwu4", videoIds: ["QH2-TGUlwu4", "2yJgwwDcgV8", "LfKCLdPTqtM", "RZzvY-xqqFQ", "eI4pbCQLClA", "yarCP79fUts", "8aNBXUoZWF4"], status: "複数動画合計 (Youtubeのみ)", pubDate: "20100725", type: "legend" }
     ];
 
     const timelineContainer = document.getElementById('timeline-container');
@@ -169,98 +169,96 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (rankingBody) {
-        // Render Ranking and Fetch Views
-        rankingData.forEach(async (item, index) => {
-            const row = document.createElement('tr');
+        (async () => {
+            // Loading indicator
+            const loadingRow = document.createElement('tr');
+            loadingRow.innerHTML = '<td colspan="5" style="text-align:center; padding:2rem; color:#aaa;">Loading view counts and sorting...</td>';
+            rankingBody.appendChild(loadingRow);
 
-            let statusClass = 'status-default';
-            if (item.type === 'legend') statusClass = 'status-legendary';
-            else if (item.status.includes("予測") || item.status.includes("未達成")) statusClass = 'status-default';
-            else statusClass = 'status-new';
-
-            // Format dates if they look like YYYYMMDD to YYYY/MM/DD
-            const formatDate = (d) => {
-                if (/^\d{8}$/.test(d)) {
-                    return `${d.substring(0, 4)}/${d.substring(4, 6)}/${d.substring(6, 8)}`;
+            // Fetch views
+            const fetchViews = async (videoId) => {
+                try {
+                    const res = await fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${videoId}`);
+                    const data = await res.json();
+                    return parseInt(data.viewCount || 0);
+                } catch (err) {
+                    console.error(`Error fetching views for ${videoId}:`, err);
+                    return 0;
                 }
-                return d;
             };
 
-            const displayPubDate = formatDate(item.pubDate);
-            const eraDisplay = getEraFromDate(item.pubDate);
-
-            let displayStatusText = item.status;
-            // Clean up status display
-            displayStatusText = displayStatusText.replace(/^\((\d{8})\)$/, (match, p1) => formatDate(p1));
-            displayStatusText = displayStatusText.replace("(", "").replace(")", "");
-
-            const displayStatus = `<span class="status-badge ${statusClass}">${item.status}</span>`;
-            const displayRank = `<span class="rank-cell" style="${item.type === 'legend' ? 'color:gold; font-size:0.9rem;' : ''}">${item.rank}</span>`;
-
-            row.innerHTML = `
-                <td>${displayRank}</td>
-                <td class="song-title-cell">
-                    <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" style="color:inherit; text-decoration:none; display:block;">
-                    ${item.title}
-                    <div style="font-size:0.75rem; color:#888; margin-top:4px;">Pub: ${displayPubDate}</div>
-                    </a>
-                </td>
-                <td>${displayStatus}</td>
-                <td style="font-size:0.85rem; color:#aaa;">${eraDisplay}</td>
-                <td class="views-cell" id="views-${item.videoId}" style="font-family:monospace; color:var(--accent-primary);">Fetching...</td>
-            `;
-            rankingBody.appendChild(row);
-
-            // Fetch View Count
-            if (item.videoIds) {
-                // Combined calculation
-                try {
-                    const el = document.getElementById(`views-${item.videoId}`);
-                    if (el) el.textContent = "Calculating...";
-
-                    const fetchPromises = item.videoIds.map(vid =>
-                        fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${vid}`)
-                            .then(res => res.json())
-                            .then(data => parseInt(data.viewCount || 0))
-                            .catch(err => {
-                                console.error(`Error fetching views for ${vid}:`, err);
-                                return 0;
-                            })
-                    );
-
-                    const views = await Promise.all(fetchPromises);
-                    const totalViews = views.reduce((a, b) => a + b, 0);
-
-                    if (el) {
-                        el.textContent = totalViews.toLocaleString();
-                        el.style.color = "#fff";
-                        el.title = `Combined views from ${item.videoIds.length} videos`;
-                    }
-                } catch (error) {
-                    console.error(`Failed to calculate combined views for ${item.title}:`, error);
-                    const el = document.getElementById(`views-${item.videoId}`);
-                    if (el) el.textContent = "---";
+            // Process all items
+            await Promise.all(rankingData.map(async (item) => {
+                if (item.videoIds) {
+                    // Combined
+                    const counts = await Promise.all(item.videoIds.map(vid => fetchViews(vid)));
+                    item.viewCount = counts.reduce((a, b) => a + b, 0);
+                } else if (item.videoId) {
+                    item.viewCount = await fetchViews(item.videoId);
+                } else {
+                    item.viewCount = 0;
                 }
-            } else if (item.videoId) {
-                try {
-                    // Using Return YouTube Dislike API as a reliable public proxy for view counts
-                    const response = await fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${item.videoId}`);
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    const data = await response.json();
-                    const viewCount = data.viewCount;
-                    if (viewCount) {
-                        const el = document.getElementById(`views-${item.videoId}`);
-                        if (el) {
-                            el.textContent = parseInt(viewCount).toLocaleString();
-                            el.style.color = "#fff"; // Brighten when loaded
-                        }
+            }));
+
+            // Sort by view count descending
+            rankingData.sort((a, b) => b.viewCount - a.viewCount);
+
+            // Clear loading
+            rankingBody.innerHTML = '';
+
+            // Render
+            let currentRank = 1;
+            rankingData.forEach((item, index) => {
+                const row = document.createElement('tr');
+
+                let statusClass = 'status-default';
+                if (item.type === 'legend') statusClass = 'status-legendary';
+                else if (item.status.includes("予測") || item.status.includes("未達成")) statusClass = 'status-default';
+                else statusClass = 'status-new';
+
+                // Format dates
+                const formatDate = (d) => {
+                    if (/^\d{8}$/.test(d)) {
+                        return `${d.substring(0, 4)}/${d.substring(4, 6)}/${d.substring(6, 8)}`;
                     }
-                } catch (error) {
-                    console.error(`Failed to fetch views for ${item.title}:`, error);
-                    const el = document.getElementById(`views-${item.videoId}`);
-                    if (el) el.textContent = "---";
+                    return d;
+                };
+
+                const displayPubDate = formatDate(item.pubDate);
+                const eraDisplay = getEraFromDate(item.pubDate);
+
+                let displayStatusText = item.status;
+                // Clean up status display
+                displayStatusText = displayStatusText.replace(/^\((\d{8})\)$/, (match, p1) => formatDate(p1));
+                displayStatusText = displayStatusText.replace("(", "").replace(")", "");
+
+                // Determine Rank Display
+                let rankDisplayValue;
+                const isExcluded = item.title.includes("Nyan Cat") || item.title.includes("Nyanyanyanyanyanyanya!");
+
+                if (isExcluded) {
+                    rankDisplayValue = item.rank; // Keep original "伝説"
+                } else {
+                    rankDisplayValue = currentRank++;
                 }
-            }
-        });
+
+                const displayStatus = `<span class="status-badge ${statusClass}">${item.status}</span>`;
+                const displayRank = `<span class="rank-cell" style="${item.type === 'legend' ? 'color:gold; font-size:0.9rem;' : ''}">${rankDisplayValue}</span>`;
+
+                row.innerHTML = `
+                    <td>${displayRank}</td>
+                    <td class="song-title-cell">
+                        <a href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" style="color:inherit; text-decoration:none; display:block;">
+                        ${item.title}
+                        <div style="font-size:0.75rem; color:#888; margin-top:4px;">Pub: ${displayPubDate}</div>
+                        </a>
+                    </td>
+                    <td>${displayStatus}</td>
+                    <td style="font-size:0.85rem; color:#aaa;">${eraDisplay}</td>
+                    <td class="views-cell" style="font-family:monospace; color:#fff;">${item.viewCount.toLocaleString()}</td>
+                `;
+                rankingBody.appendChild(row);
+            });
+        })();
     }
 });
